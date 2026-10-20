@@ -1,15 +1,30 @@
-import { Geist, Geist_Mono } from "next/font/google"
-
+import { Inter, Manrope, JetBrains_Mono } from "next/font/google"
 import "@workspace/ui/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@workspace/ui/lib/utils";
+import { cn } from "@workspace/ui/lib/utils"
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+})
 
-const fontMono = Geist_Mono({
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+})
+
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  display: "swap",
 })
+
+export const metadata = {
+  title: "TR3-G Innovations Limited - Enterprise Software, Built Secure",
+  description: "TR3-G Innovations Limited designs and builds custom high-performance digital ecosystems for enterprises and government institutions.",
+}
 
 export default function RootLayout({
   children,
@@ -20,10 +35,17 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
+      className={cn(
+        "antialiased",
+        inter.variable,
+        manrope.variable,
+        jetbrainsMono.variable
+      )}
     >
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="min-h-screen bg-[var(--bg)] text-[var(--ink)]">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )
