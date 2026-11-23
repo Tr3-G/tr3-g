@@ -1,10 +1,63 @@
 import Link from "next/link"
-import { ArrowUpRight, Target, Eye, Layers, Shield, FileText, Lock, Server, CheckCircle2 } from "lucide-react"
+import {
+  ArrowUpRight,
+  Target,
+  Eye,
+  Layers,
+  Shield,
+  FileText,
+  Lock,
+  Server,
+  CheckCircle2,
+  Sparkles,
+  ShieldCheck,
+  Award,
+  HeartHandshake,
+  Users,
+} from "lucide-react"
 
 export const metadata = {
   title: "About Us - TR3-G Innovations Limited",
-  description: "Identity story, architectural philosophy, milestones, and institutional compliance standards of TR3-G Innovations Limited.",
+  description: "Identity story, core values, architectural philosophy, milestones, and institutional compliance standards of TR3-G Innovations Limited.",
 }
+
+const coreValues = [
+  {
+    ref: "VAL-01",
+    title: "Innovation",
+    icon: Sparkles,
+    description:
+      "We don't just follow technology, we create it. We build smart, forward-thinking solutions that solve real problems.",
+  },
+  {
+    ref: "VAL-02",
+    title: "Integrity",
+    icon: ShieldCheck,
+    description:
+      "We deliver what we promise. Transparent processes, honest pricing, and secure handling of client data.",
+  },
+  {
+    ref: "VAL-03",
+    title: "Excellence",
+    icon: Award,
+    description:
+      "We build to world-class standards. Every line of code, every system, and every deployment must work flawlessly.",
+  },
+  {
+    ref: "VAL-04",
+    title: "Client-Centricity",
+    icon: HeartHandshake,
+    description:
+      "Our clients' success is our success. We listen first, understand their business, then build solutions that fit them.",
+  },
+  {
+    ref: "VAL-05",
+    title: "Collaboration",
+    icon: Users,
+    description:
+      "We grow through teamwork. We integrate with our clients, partners, and each other to transform ideas into impact.",
+  },
+]
 
 export default function AboutPage() {
   return (
@@ -85,6 +138,52 @@ export default function AboutPage() {
                 Bespoke, full-stack builds — never rigid pre-built templates — mapped to each client's real operating context.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Core Values */}
+      <section className="border-b rule py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <p className="font-mono text-xs uppercase tracking-wide teal-text mb-4 font-semibold">What guides us</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div>
+              <h2 className="font-display text-3xl sm:text-4xl max-w-xl font-bold">Our core values</h2>
+              <p className="mt-4 text-base muted-text leading-relaxed max-w-2xl">
+                The foundational principles behind our engineering rigor, our team culture, and how we deliver enduring value to every client.
+              </p>
+            </div>
+            <span className="font-mono text-xs text-muted-custom uppercase tracking-wider hidden md:block">
+              VAL // 05 Pillars
+            </span>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-6 gap-6">
+            {coreValues.map((value, idx) => {
+              const Icon = value.icon
+              const isWide = idx >= 3
+              return (
+                <div
+                  key={value.title}
+                  className={`bg-surface border rule-strong rounded-sm p-8 flex flex-col justify-between hover:border-[var(--brass)] transition-colors shadow-sm group ${
+                    isWide ? "sm:col-span-1 lg:col-span-3" : "sm:col-span-1 lg:col-span-2"
+                  } ${idx === 4 ? "sm:col-span-2 lg:col-span-3" : ""}`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="w-10 h-10 rounded-sm bg-surface-2 border rule flex items-center justify-center group-hover:border-[var(--brass)] transition-colors">
+                        <Icon className="w-5 h-5 brass-text" />
+                      </div>
+                      <span className="font-mono text-xs text-muted-custom font-semibold tracking-wider">
+                        {value.ref}
+                      </span>
+                    </div>
+                    <h3 className="font-display text-xl font-bold mb-3">{value.title}</h3>
+                    <p className="text-sm muted-text leading-relaxed">{value.description}</p>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>

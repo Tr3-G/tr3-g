@@ -24,6 +24,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata = {
   title: "TR3-G Innovations Limited - Enterprise Software, Built Secure",
   description: "TR3-G Innovations Limited designs and builds custom high-performance digital ecosystems for enterprises and government institutions.",
+  icons: {
+    icon: "/img/tr3-g.webp",
+    shortcut: "/img/tr3-g.webp",
+    apple: "/img/tr3-g.webp",
+  },
 }
 
 export default function RootLayout({

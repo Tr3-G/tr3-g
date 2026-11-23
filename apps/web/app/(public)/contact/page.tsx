@@ -89,8 +89,9 @@ export default function ContactPage() {
                 <MapPin className="h-5 w-5 brass-text shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-mono text-xs font-bold uppercase text-[var(--ink)]">Location</h4>
-                  <p className="mt-1 text-sm text-[var(--muted-custom)]">
-                    Federal Capital Territory (FCT), Abuja, Nigeria
+                  <p className="mt-1 text-sm text-[var(--muted-custom)] leading-relaxed">
+                    AA2 Behind Arena Off Dunamis Church<br />
+                    Kuje Abuja
                   </p>
                 </div>
               </div>

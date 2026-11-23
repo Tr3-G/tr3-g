@@ -131,7 +131,7 @@ export default function PartnersPage() {
                         <span className="seal w-12 h-12 flex items-center justify-center shrink-0 bg-[var(--surface)]">
                           {partner.image_id ? (
                             <img
-                              src={`/api/images/${partner.image_id}`}
+                              src={partner.image_id.startsWith("http") ? partner.image_id : `/api/images/${partner.image_id}`}
                               alt={partner.title}
                               className="w-full h-full object-contain p-1.5"
                             />

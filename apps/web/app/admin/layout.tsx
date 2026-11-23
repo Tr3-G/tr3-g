@@ -14,6 +14,12 @@ import {
   MessageSquare,
   ShieldCheck,
   ClipboardList,
+  Images,
+  Mail,
+  UserCheck,
+  Clock,
+  FileCheck,
+  ShieldAlert,
   ExternalLink,
   LogOut,
   Menu,
@@ -28,13 +34,19 @@ const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/services", label: "Services", icon: Briefcase },
   { href: "/admin/solutions", label: "Solutions", icon: Cpu },
+  { href: "/admin/gallery", label: "Gallery", icon: Images },
   { href: "/admin/team", label: "Team", icon: Users },
   { href: "/admin/partners", label: "Partners", icon: Handshake },
   { href: "/admin/careers", label: "Careers", icon: GraduationCap },
   { href: "/admin/recruitment-forms", label: "Recruitment Forms", icon: ClipboardList },
   { href: "/admin/applications", label: "Applications", icon: FileText },
+  { href: "/admin/biodata", label: "BioData Records", icon: UserCheck },
+  { href: "/admin/attendance", label: "Attendance Logs", icon: Clock },
+  { href: "/admin/reports", label: "Staff Reports", icon: FileCheck },
   { href: "/admin/contacts", label: "Contact Messages", icon: MessageSquare },
+  { href: "/admin/mail", label: "Send Mail", icon: Mail },
   { href: "/admin/staff", label: "Staff Management", icon: ShieldCheck },
+  { href: "/admin/audit-logs", label: "Audit Logs", icon: ShieldAlert },
 ]
 
 function AdminShell({ children }: { children: React.ReactNode }) {
@@ -64,19 +76,25 @@ function AdminShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-[var(--bg)] text-[var(--ink)]">
+    <div className="flex h-screen overflow-hidden bg-[var(--bg)] text-[var(--ink)]">
       {/* Sidebar for Desktop */}
-      <aside className="hidden w-64 shrink-0 flex-col border-r rule bg-[var(--surface)] lg:flex">
-        <div className="flex h-16 items-center border-b rule px-6">
-          <Link href="/admin" className="flex items-center gap-2">
-            <span className="font-display text-lg font-bold tracking-tight text-[var(--ink)]">TR3-G</span>
-            <span className="rounded bg-[var(--brass)]/15 px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-[var(--brass)] border border-[var(--brass)]/30">
+      <aside className="hidden w-64 shrink-0 flex-col h-full border-r rule bg-[var(--surface)] lg:flex">
+        {/* Sidebar Header with Brand Logo */}
+        <div className="flex h-16 shrink-0 items-center justify-between border-b rule px-5">
+          <Link href="/admin" className="flex items-center gap-2.5">
+            <img
+              src="/img/tr3-g.webp"
+              alt="TR3-G Innovations"
+              className="h-7 w-auto"
+            />
+            <span className="rounded bg-[var(--brass)]/15 px-1.5 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-wider text-[var(--brass)] border border-[var(--brass)]/30">
               CONTROL PLANE
             </span>
           </Link>
         </div>
 
-        <nav className="flex-1 space-y-1 p-4 font-mono text-xs">
+        {/* Sidebar Navigation Items (Scrollable) */}
+        <nav className="flex-1 space-y-1 p-4 font-mono text-xs overflow-y-auto">
           {navItems.map((item) => {
             const isActive = item.exact
               ? pathname === item.href
@@ -99,10 +117,11 @@ function AdminShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="border-t rule p-4">
+        {/* Sidebar Footer (with Scrollbar) */}
+        <div className="border-t rule p-4 shrink-0 overflow-y-auto max-h-48">
           <div className="rounded-md bg-[var(--surface-2)] p-3">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-xs font-bold text-[var(--ink)]">
+              <span className="font-mono text-xs font-bold text-[var(--ink)] truncate max-w-[130px]">
                 {user.full_name || user.username}
               </span>
               <span className="rounded bg-[var(--brass)]/20 px-1.5 py-0.5 font-mono text-[10px] uppercase text-[var(--brass)]">
@@ -121,9 +140,9 @@ function AdminShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main Area */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Top Header */}
-        <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center justify-between border-b rule bg-[var(--bg)]/95 px-4 backdrop-blur sm:px-6">
+      <div className="flex flex-1 flex-col h-full overflow-hidden">
+        {/* Top Header - Fixed and never scrolls with page content */}
+        <header className="shrink-0 z-30 flex h-16 items-center justify-between border-b rule bg-[var(--bg)]/95 px-4 backdrop-blur sm:px-6 shadow-sm">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -177,7 +196,7 @@ function AdminShell({ children }: { children: React.ReactNode }) {
 
         {/* Mobile Navigation Drawer */}
         {mobileOpen && (
-          <div className="border-b rule bg-[var(--surface)] p-4 lg:hidden">
+          <div className="border-b rule bg-[var(--surface)] p-4 lg:hidden shrink-0 max-h-72 overflow-y-auto">
             <nav className="space-y-1 font-mono text-xs">
               {navItems.map((item) => {
                 const isActive = item.exact
@@ -204,7 +223,7 @@ function AdminShell({ children }: { children: React.ReactNode }) {
           </div>
         )}
 
-        {/* Content Body */}
+        {/* Content Body - Only this container scrolls */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           <div className="mx-auto max-w-7xl">{children}</div>
         </main>

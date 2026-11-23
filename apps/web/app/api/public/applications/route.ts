@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createApplication, getContentById, saveImageBytes } from "@/lib/db"
+import { uploadToCloudinary } from "@/lib/cloudinary"
+import { sendApplicationConfirmationEmail } from "@/lib/brevo"
 
 export async function POST(request: NextRequest) {
   try {
@@ -42,7 +44,25 @@ export async function POST(request: NextRequest) {
         const buf = Buffer.from(arrayBuf)
         resumeName = file.name || "resume.pdf"
         resumeMime = file.type || "application/pdf"
-        resumeId = await saveImageBytes(resumeName, resumeMime, buf)
+
+        // Attempt Cloudinary document upload
+        let cldDoc = null
+        try {
+          cldDoc = await uploadToCloudinary(buf, {
+            folder: "tr3g/resumes",
+            resourceType: "raw",
+            filename: resumeName,
+            mime: resumeMime,
+          })
+        } catch (cldErr) {
+          console.warn("Cloudinary resume upload failed, saving locally:", cldErr)
+        }
+
+        if (cldDoc && cldDoc.secure_url) {
+          resumeId = cldDoc.secure_url
+        } else {
+          resumeId = await saveImageBytes(resumeName, resumeMime, buf)
+        }
       }
     } else {
       const body = await request.json()
@@ -62,7 +82,24 @@ export async function POST(request: NextRequest) {
         const mime = body.resume.mime || "application/pdf"
         resumeName = name
         resumeMime = mime
-        resumeId = await saveImageBytes(name, mime, buf)
+
+        let cldDoc = null
+        try {
+          cldDoc = await uploadToCloudinary(buf, {
+            folder: "tr3g/resumes",
+            resourceType: "raw",
+            filename: name,
+            mime,
+          })
+        } catch (cldErr) {
+          console.warn("Cloudinary resume upload failed, saving locally:", cldErr)
+        }
+
+        if (cldDoc && cldDoc.secure_url) {
+          resumeId = cldDoc.secure_url
+        } else {
+          resumeId = await saveImageBytes(name, mime, buf)
+        }
       }
     }
 
@@ -96,6 +133,19 @@ export async function POST(request: NextRequest) {
       resume_name: resumeName,
       resume_mime: resumeMime,
     })
+
+    // Send confirmation email via Brevo
+    try {
+      await sendApplicationConfirmationEmail({
+        toEmail: email.trim(),
+        toName: fullName.trim(),
+        roleTitle: careerTitle,
+        applicantName: fullName.trim(),
+        referenceId: application._id,
+      })
+    } catch (mailErr) {
+      console.warn("Brevo confirmation email skipped or failed:", mailErr)
+    }
 
     return NextResponse.json({ success: true, id: application._id }, { status: 201 })
   } catch (error: any) {

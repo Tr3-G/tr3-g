@@ -8,7 +8,8 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "typecheck": "turbo typecheck",
-    "db:seed": "npm --workspace web run migrate:nedb"
+    "db:seed": "npm --workspace web run migrate:nedb",
+    "db:migrate": "npm --workspace web run db:migrate"
   },
   "devDependencies": {
     "@workspace/eslint-config": "*",

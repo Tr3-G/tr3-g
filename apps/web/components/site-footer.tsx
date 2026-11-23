@@ -49,7 +49,8 @@ export function SiteFooter() {
               <li><Link href="/partners" className="hover:text-[var(--ink)] transition">Alliances</Link></li>
               <li><Link href="/contact" className="hover:text-[var(--ink)] transition">Contact channels</Link></li>
               <li><Link href="/careers" className="hover:text-[var(--ink)] transition">Career portals</Link></li>
-              <li><Link href="/admin" className="hover:text-[var(--ink)] transition text-[var(--brass)] font-mono text-xs">Admin CMS →</Link></li>
+              <li><Link href="/attendance" className="hover:text-[var(--ink)] transition">Staff Attendance</Link></li>
+              <li><Link href="/reports/submit" className="hover:text-[var(--ink)] transition">Staff Reporting</Link></li>
             </ul>
           </div>
 

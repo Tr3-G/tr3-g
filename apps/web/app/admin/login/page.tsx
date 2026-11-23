@@ -112,12 +112,6 @@ export default function AdminLoginPage() {
             )}
           </button>
         </form>
-
-        <div className="mt-8 border-t rule pt-4 text-center">
-          <p className="font-mono text-[11px] text-[var(--muted-custom)]">
-            Default credentials: <code className="text-[var(--brass)]">admin</code> / <code className="text-[var(--brass)]">admin123</code>
-          </p>
-        </div>
       </div>
     </div>
   )

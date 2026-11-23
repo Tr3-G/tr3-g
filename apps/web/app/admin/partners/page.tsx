@@ -53,6 +53,7 @@ export default function AdminPartnersPage() {
     try {
       const formData = new FormData()
       formData.append("file", file)
+      formData.append("folder", "tr3g/partners")
 
       const res = await fetch("/api/admin/upload", {
         method: "POST",
@@ -64,9 +65,10 @@ export default function AdminPartnersPage() {
         throw new Error(data.error || "Failed to upload logo")
       }
 
+      const imageUrl = data.secure_url || data.url || data.id
       setForm((prev) => ({
         ...prev,
-        image_id: data.id,
+        image_id: imageUrl,
       }))
     } catch (err: any) {
       setError("Logo upload failed: " + err.message)
@@ -237,7 +239,7 @@ export default function AdminPartnersPage() {
                       <div className="h-10 w-10 rounded border rule bg-[var(--surface-2)] flex items-center justify-center overflow-hidden">
                         {item.image_id ? (
                           <img
-                            src={`/api/images/${item.image_id}`}
+                            src={item.image_id.startsWith("http") ? item.image_id : `/api/images/${item.image_id}`}
                             alt={item.title}
                             className="h-full w-full object-contain p-1"
                           />
@@ -369,16 +371,16 @@ export default function AdminPartnersPage() {
                 </select>
               </div>
 
-              {/* Logo Upload (Stored as Bytes) */}
+              {/* Logo Upload (Cloudinary) */}
               <div>
                 <label className="block font-mono text-xs text-[var(--muted-custom)]">
-                  Partner Logo (Stored as Raw Bytes)
+                  Partner Logo (Cloudinary Upload)
                 </label>
                 <div className="mt-2 flex items-center gap-4">
                   {form.image_id ? (
                     <div className="relative h-14 w-14 shrink-0 rounded border rule bg-[var(--surface-2)] p-1 overflow-hidden">
                       <img
-                        src={`/api/images/${form.image_id}`}
+                        src={form.image_id.startsWith("http") ? form.image_id : `/api/images/${form.image_id}`}
                         alt="Preview"
                         className="h-full w-full object-contain"
                       />
@@ -398,7 +400,7 @@ export default function AdminPartnersPage() {
 
                   <label className="btn-outline flex cursor-pointer items-center gap-2 rounded px-3 py-2 text-xs font-mono">
                     <Upload className="h-4 w-4" />
-                    <span>{uploadingImage ? "Uploading Bytes..." : "Upload Logo (Bytes)"}</span>
+                    <span>{uploadingImage ? "Uploading to Cloudinary..." : "Upload Logo (Cloudinary)"}</span>
                     <input
                       type="file"
                       accept="image/*"

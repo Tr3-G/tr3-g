@@ -51,6 +51,7 @@ export default function AdminTeamPage() {
     try {
       const formData = new FormData()
       formData.append("file", file)
+      formData.append("folder", "tr3g/team")
 
       const res = await fetch("/api/admin/upload", {
         method: "POST",
@@ -62,9 +63,10 @@ export default function AdminTeamPage() {
         throw new Error(data.error || "Failed to upload image")
       }
 
+      const imageUrl = data.secure_url || data.url || data.id
       setForm((prev) => ({
         ...prev,
-        image_id: data.id,
+        image_id: imageUrl,
       }))
     } catch (err: any) {
       setError("Image upload failed: " + err.message)
@@ -197,7 +199,7 @@ export default function AdminTeamPage() {
                 <div className="aspect-square w-full rounded-md border rule bg-[var(--surface-2)] flex items-center justify-center overflow-hidden">
                   {member.image_id ? (
                     <img
-                      src={`/api/images/${member.image_id}`}
+                      src={member.image_id.startsWith("http") ? member.image_id : `/api/images/${member.image_id}`}
                       alt={member.title}
                       className="h-full w-full object-cover"
                     />
@@ -292,16 +294,16 @@ export default function AdminTeamPage() {
                 />
               </div>
 
-              {/* Image Upload (Raw Bytes) */}
+              {/* Image Upload (Cloudinary) */}
               <div>
                 <label className="block font-mono text-xs text-[var(--muted-custom)]">
-                  Member Photo (Stored as Raw Bytes)
+                  Member Photo (Cloudinary Upload)
                 </label>
                 <div className="mt-2 flex items-center gap-4">
                   {form.image_id ? (
                     <div className="relative h-16 w-16 shrink-0 rounded border rule overflow-hidden">
                       <img
-                        src={`/api/images/${form.image_id}`}
+                        src={form.image_id.startsWith("http") ? form.image_id : `/api/images/${form.image_id}`}
                         alt="Preview"
                         className="h-full w-full object-cover"
                       />
@@ -321,7 +323,7 @@ export default function AdminTeamPage() {
 
                   <label className="btn-outline flex cursor-pointer items-center gap-2 rounded px-3 py-2 text-xs font-mono">
                     <Upload className="h-4 w-4" />
-                    <span>{uploadingImage ? "Uploading Bytes..." : "Upload Photo (Bytes)"}</span>
+                    <span>{uploadingImage ? "Uploading to Cloudinary..." : "Upload Photo (Cloudinary)"}</span>
                     <input
                       type="file"
                       accept="image/*"

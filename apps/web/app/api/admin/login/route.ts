@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { authenticateStaff, createSessionToken, AUTH_COOKIE_NAME } from "@/lib/auth"
+import { logAudit } from "@/lib/db"
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,6 +16,14 @@ export async function POST(request: NextRequest) {
 
     const user = await authenticateStaff(username, password)
     if (!user) {
+      await logAudit({
+        actor_name: username,
+        action: "LOGIN_FAILED",
+        resource: "auth",
+        details: `Failed authentication attempt for username: ${username}`,
+        status: "warning",
+      }).catch(() => {})
+
       return NextResponse.json(
         { error: "Invalid username or password" },
         { status: 401 }
@@ -33,6 +42,16 @@ export async function POST(request: NextRequest) {
         permissions: user.permissions,
       },
     })
+
+    await logAudit({
+      actor_id: user.id,
+      actor_name: user.full_name || user.username,
+      actor_role: user.role || "admin",
+      action: "LOGIN",
+      resource: "auth",
+      details: `Administrator ${user.username} logged into control plane.`,
+      status: "success",
+    }).catch(() => {})
 
     response.cookies.set(AUTH_COOKIE_NAME, token, {
       httpOnly: true,

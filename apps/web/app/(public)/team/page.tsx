@@ -97,7 +97,7 @@ export default function TeamPage() {
                   <div className="aspect-square bg-surface border rule-strong rounded-sm flex items-center justify-center overflow-hidden transition-all group-hover:border-[var(--brass)] shadow-md">
                     {member.image_id ? (
                       <img
-                        src={`/api/images/${member.image_id}`}
+                        src={member.image_id.startsWith("http") ? member.image_id : `/api/images/${member.image_id}`}
                         alt={member.title}
                         className="w-full h-full object-cover"
                       />
