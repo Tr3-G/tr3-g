@@ -95,29 +95,6 @@ tr3-g/
    npm install
    ```
 
-### Environment Configuration
-Create a `.env` file inside `apps/web/.env` (and root if required):
-
-```env
-# Database (Neon PostgreSQL)
-DATABASE_URL="postgresql://user:password@ep-sample-pool.region.aws.neon.tech/neondb?sslmode=require"
-
-# Authentication
-JWT_SECRET="your-secure-jwt-random-secret"
-
-# Brevo (Sendinblue) Transactional Emails
-BREVO_API_KEY="xkeysib-your-brevo-api-key"
-BREVO_SENDER_EMAIL="notifications@tr3g.com"
-BREVO_SENDER_NAME="TR3-G Innovations"
-
-# Cloudinary Storage
-CLOUDINARY_CLOUD_NAME="your-cloud-name"
-CLOUDINARY_API_KEY="your-cloudinary-api-key"
-CLOUDINARY_API_SECRET="your-cloudinary-api-secret"
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
-NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET="your-unsigned-upload-preset"
-```
-
 ### Database Migration
 To set up all tables (`users`, `solutions`, `partners`, `team`, `applications`, `gallery`, `biodata`, `guarantors`, `attendance`, `reports`, `audit_logs`) and indexes:
 
